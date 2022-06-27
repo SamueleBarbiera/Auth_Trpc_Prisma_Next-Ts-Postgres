@@ -3,11 +3,10 @@
 /* eslint-disable no-unused-vars */
 import { RefreshIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { Dialog, Popover, Transition } from '@headlessui/react'
-import { FaRegUser, FaParking } from 'react-icons/fa'
-import { useSession, signOut } from 'next-auth/client'
+import { FaRegUser } from 'react-icons/fa'
+import { useSession, signOut } from 'next-auth/react'
 import { Fragment } from 'react'
 import { useState } from 'react'
-import { useShoppingCart } from 'use-shopping-cart'
 import { AiTwotoneCar } from 'react-icons/ai'
 
 const navigation = {
@@ -17,11 +16,6 @@ const navigation = {
             href: '#',
             icon: <AiTwotoneCar className="h-6 w-6 flex-shrink-0 text-indigo-900" aria-hidden="true" />,
         },
-        {
-            name: 'Parcheggi',
-            href: '/Parcheggi',
-            icon: <FaParking className="h-6 w-6 flex-shrink-0 text-indigo-900" aria-hidden="true" />,
-        },
     ],
 }
 
@@ -30,8 +24,7 @@ function classNames(...classes: any[]) {
 }
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [session, loading] = useSession()
-    const { cartCount } = useShoppingCart()
+    const { data: session, status } = useSession()
 
     return (
         <>
@@ -142,7 +135,6 @@ export default function Header() {
                                             </button>
                                         </div>
 
-
                                         <div className="flex flex-1 items-center justify-end">
                                             <div className="-mr-4 flex items-center">
                                                 {/* Help */}
@@ -214,7 +206,7 @@ export default function Header() {
                                                             )}
                                                         </Popover>
                                                     </div>
-                                                ) : loading ? (
+                                                ) : status == 'loading' ? (
                                                     <RefreshIcon className="mr-4 h-6 w-6 flex-shrink-0 animate-spin text-indigo-800 " />
                                                 ) : (
                                                     <>
@@ -225,7 +217,6 @@ export default function Header() {
                                                         </a>
                                                     </>
                                                 )}
-                                                
                                             </div>
                                         </div>
                                     </div>
